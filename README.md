@@ -1,3 +1,5 @@
+## Extreme Weather Event Attribution for the 2002 Indian Drought
+
 > **Note:** The analysis in this report follows the example analysis
 > provided by the World Weather Attribution Github account
 > (<https://github.com/WorldWeatherAttribution/rwwa_mwe>)
@@ -64,7 +66,7 @@ future.
 
 Event attribution is possible in R using the rwwa package
 (<https://github.com/WorldWeatherAttribution/rwwa>).
-
+```r
     # Load the covariate data
     # We are examining data from 1960 to 2021, and so the GMST data is subsetted to match. 
     # The drought of interest occurred in 2002, and so we standardise the data around the 2002 value
@@ -100,19 +102,19 @@ Event attribution is possible in R using the rwwa package
 
     # combine into single dataframe
     df <-cbind.data.frame(gmst, IOD, SOI, nino_pos, iod_pos, SPEI)
-
+```
 Below we plot the SPEI values by year, including a Loess smoother
 (Locally Estimated Scatterplot Smoothing) to fit a smoothed trend line
 to the SPEI time series. This helps reveal underlying trends without
 assuming a specific parametric model. We see a dip in the Loess smoother
 below, corresponding to the drought event in 2002.
-
+```r
     # Plot the time series
     plot(df$year-0.5, df$SPEI, type = "s", lwd = 2, xlab = "", ylab = "SPEI", bg = "white")
     points(df[df$year == 2002,c("year", "SPEI")],pch = 22, bg = "magenta", lwd = 2, cex = 1.2) # add a point for the drought in 2002
     lines(df$year, fitted(loess(SPEI ~ year, df)), col = "forestgreen", lty = "32", lwd = 3)# add a simple Loess smoother to see if there is any trend over time
     legend("bottomleft", c("Rainfall", "Loess smoothed"), lty = c("solid","32"), lwd = 2, col = c("black", "forestgreen"))
-
+```
 ![](event_attribution_files/figure-markdown_strict/unnamed-chunk-2-1.png)
 
 #### Fitting Non-Stationary Distribution to the Data
@@ -121,7 +123,7 @@ We test several models: where SPEI depends only on GMST, IOD, positive
 IOD, SOI, and Nino3.4 Index, respectively, and a final model where SPEI
 depends on a combination of GMST, positive Nino3.4 index and positive
 IOD.
-
+```r
     # Model fitting
     mdl_gmst <- fit_ns("norm", "shift", df, "SPEI", c("gmst"), lower = T)
     mdl_iod <- fit_ns("norm", "shift", df, "SPEI", c("gmst", "IOD"), lower = T)
@@ -129,7 +131,7 @@ IOD.
     mdl_soi <- fit_ns("norm", "shift", df, "SPEI", c("gmst", "soi_max"), lower = T)
     mdl_nino_pos <- fit_ns("norm", "shift", df, "SPEI", c("gmst", "nino_pos"), lower = T)
     mdl_nino_iod <- fit_ns("norm", "shift", df, "SPEI", c("gmst", "nino_pos", "iod_pos"), lower = T)
-
+```
 #### Comparing Fitted Models
 
 We now compare the fitted models based on AIC values and explained
@@ -168,7 +170,7 @@ one provides the best fit. this is also the model with the highest
 suggests that this model explains more of the variance in SPEI than the
 other models (31% according to the *R*<sup>2</sup> value and 27.5%
 according to the adjusted *R*<sup>2</sup> value).
-
+```r
     # Comparing models
     models <- list("gmst" = mdl_gmst, "IOD" = mdl_iod, "PosIOD"=mdl_pos_iod,"SOI"=mdl_soi,  "nino"=mdl_nino_pos, "nino_iod"=mdl_nino_iod)
     rbind("aic" = round(sapply(models, aic),1), round(sapply(models, rsquared),3))
@@ -187,7 +189,7 @@ according to the adjusted *R*<sup>2</sup> value).
     plot_trend(mdl_gmst, xlab = "", ylab = "SPEI", ylim = c(-3,3), rp = c(20), add_loess = T, legend = "topright", main = "SPEI ~ GMST")
     plot_trend(mdl_nino_pos, xlab = "", ylab = "", ylim = c(-3,3), rp = c(20), add_loess = T, legend = "topright", main = "SPEI ~ GMST + Positive Nino3.4")
     plot_trend(mdl_nino_iod, xlab = "", ylab = "", ylim = c(-3,3), rp = c(20), add_loess = T, legend = "topright", main = "SPEI~GMST+Positive Nino3.4+Positive IOD")
-
+```
 ![](event_attribution_files/figure-markdown_strict/unnamed-chunk-5-1.png)
 
 #### Return Level Plots
@@ -217,7 +219,7 @@ climate of 2002 is our factual climate.
 For our counter factual climates, we examine a pre-industrial climate
 (natural climate: expected climate without human-induced climate change)
 and a neutral climate (one with a neutral ENSO phase).
-
+```r
     # our factual climate is determined by the values of the covariates in 2023
     cov_2002 <- df[df$year == 2002,c("gmst", "nino_pos", "iod_pos"),drop = F]
 
@@ -348,9 +350,9 @@ and a neutral climate (one with a neutral ENSO phase).
     # Expected return levels of 6-month SPEI in the 2002 climate (red lines) and a counterfactual climate
     # (blue lines); (left) counterfactual is 1.36C cooler; (right) counterfactual has neutral Niño3.4 index.
     a<-plot_returnlevels(mdl_nino_iod, cov_f = cov_2002, cov_cf = cov_cf["hist",,drop = F], ev=-2.08, nsamp = 1000, ylab = "SPEI", ylim = c(-5,3),main = "Current climate vs preindustrial")
-
+```
 ![](event_attribution_files/figure-markdown_strict/unnamed-chunk-6-1.png)
-
+```r
     # Extract event return periods
     a$event_rp_values
 
@@ -370,9 +372,9 @@ and a neutral climate (one with a neutral ENSO phase).
     ## [1]    6.968588 4132.896170
 
     b<-plot_returnlevels(mdl_nino_iod, cov_f = cov_2002, cov_cf = cov_cf["neut",,drop = F], ev=-2.08,nsamp = 1000, ylab = "SPEI", ylim = c(-5,3),main = "Current climate vs neutral ENSO phase")
-
+```
 ![](event_attribution_files/figure-markdown_strict/unnamed-chunk-6-2.png)
-
+```r
     # Extract event return periods
     b$event_rp_values
 
@@ -390,7 +392,7 @@ and a neutral climate (one with a neutral ENSO phase).
     ## 
     ## $counterfactual
     ## [1]  23.83968 217.30657
-
+```
 The return period of 2002 drought in the 2002 climate is 10.43 years
 (95% confidence interval: 3.8 - 42.5 years). This means that in the 2002
 climate, a drought of this magnitude was expected to occur approximately
@@ -412,8 +414,8 @@ similar drought would have occurred approximately once every 47 years.
 The return period is similar to the pre-industrial climate, suggesting
 that ENSO variability significantly influences drought frequency in the
 present-day climate.
-
-    # Bootstrap results                                                                 ####
+```r
+    # Bootstrap results                                                        
 
     # Bootstrapping is used to estimate a 95% confidence interval for the quantities of interest: the model parameters, return period, and probability ratio (PR_hist/neut) and absolute and relative changes in intensity (dI_abs_hist/neut, dI_rel_hist/neut) associated with each of the counterfactual climates defined.
 
@@ -456,7 +458,7 @@ present-day climate.
     ## #   `dI-abs-neut-97.5%` <dbl>, `dI-rel-neut-97.5%` <dbl>
 
     write.csv(res_wide, "res_obs.csv")
-
+```
 #### Synthesis with Climate Models
 
 To confidently attribute the observed trend in drought as classified by
@@ -474,7 +476,7 @@ Nino conditions, so we standardise all Nino3.4 indices so that 1960-2021
 (the observed time period) has a mean 0 and standard deviation 1. The
 2002 standardised El Nino covariate then defines the factual climate
 along with the model’s 2002 GMST.
-
+```r
     # Fit the same nonstationary model for climate models 
     # load observed Nino covariate & standardise wrt obs period
     nino_obs <- read.csv("EA_data/nino_6monthly.csv", col.names = c("year", "nino"))
@@ -482,7 +484,7 @@ along with the model’s 2002 GMST.
     nino_obs$nino_std <- (nino_obs$nino - mean(nino_cal)) / sd(nino_cal)
 
     nino_2002 <- nino_obs$nino_std[nino_obs$year == 2002] #' this is our 'factual' Nino state
-
+```
 Here we examine several global climate models (GCMs) used in climate
 change studies. Each comes from a different modelling centre and has
 unique characteristics:
@@ -493,7 +495,7 @@ This was developed by the UK Met Office, and includes interactive carbon
 and atmospheric chemistry components, allowing it to simulate feedbacks
 between the climate and the carbon cycle. It is widely used in CMIP5
 (Coupled Model Intercomparison Project Phase 5).
-
+```r
     # HadGEM2-ES Model
     SPEI<-load_ts("~/EA_data/SPEI_HadGEM2-ES_r1i1p1.dat", col.names = c("year", "SPEI"))
     gmst <- load_ts("~/EA_data/cmip5_smoothed-gsat_HadGEM2-ES_rcp85_r1.dat", col.names = c("year", "gmst"))
@@ -525,14 +527,14 @@ between the climate and the carbon cycle. It is widely used in CMIP5
     res_df <- cmodel_results(mdl, cov_f = cov_2002, cov_hist = cov_cf, cov_fut = cov_fut, nsamp = 1000, y_start = 1960, y_now = 2002, y_fut = 2100)
 
     write.csv(res_df, "HadGEM-ES.csv")
-
+```
 ##### CanESM2 (Canadian Earth System Model, version 2)
 
 Developed by the Canadian Centre for Climate Modelling and Analysis
 (CCCma), this model incorporates atmospheric, oceanic, land surface, and
 carbon cycle components. It is often used for simulating long-term
 climate changes and variability.
-
+```r
     # CanESM2 Model
     spei <- read.table("~/EA_data/CMIP5_PDSI_spei_CanESM2.dat", header = TRUE, sep = ",", stringsAsFactors = FALSE)
     gmst <- load_ts("EA_data/cmip5_smoothed-gsat_CanESM2_rcp85_r1.dat", col.names = c("year", "gmst"))
@@ -564,13 +566,13 @@ climate changes and variability.
     res_df <- cmodel_results(mdl,  cov_f = cov_2002, cov_hist = cov_cf, cov_fut = cov_fut, nsamp = 1000, y_start = 1960, y_now = 2002, y_fut = 2099)
 
     write.csv(res_df, "CanESM2.csv")
-
+```
 ##### MIROC5 (Model for Interdisciplinary Research on Climate, version 5)
 
 Developed by a collaboration of Japanese institutions, MIROC5 provides
 high-resolution climate simulations with improved cloud and convection
 processes, making it useful for regional climate projections.
-
+```r
     # MIROC5 Model
     spei <- read.table("~/EA_data/CMIP5_PDSI_spei_MIROC5.dat", header = TRUE, sep = ",", stringsAsFactors = FALSE)
     gmst <- load_ts("EA_data/cmip5_smoothed-gsat_MIROC5_rcp85_r1.dat", col.names = c("year", "gmst"))
@@ -602,14 +604,14 @@ processes, making it useful for regional climate projections.
     res_df <- cmodel_results(mdl,  cov_f = cov_2002, cov_hist = cov_cf, cov_fut = cov_fut, nsamp = 1000, y_start = 1960, y_now = 2002, y_fut = 2099)
 
     write.csv(res_df, "MIROC5.csv")
-
+```
 ##### NorESM1-M (Norwegian Earth System Model, version 1 - Medium resolution)
 
 Developed by the Norwegian Climate Centre, this model is based on the
 CESM (Community Earth System Model) framework but with enhanced ocean
 and aerosol processes, making it useful for studying climate-aerosol
 interactions.
-
+```r
     # NorESM1_M Model
     spei <- read.table("~/EA_data/CMIP5_PDSI_spei_NorESM1_M.dat", header = TRUE, sep = ",", stringsAsFactors = FALSE)
     gmst <- load_ts("EA_data/cmip5_smoothed-gsat_NorESM1-M_rcp85_r1.dat", col.names = c("year", "gmst"))
@@ -641,11 +643,11 @@ interactions.
     res_df <- cmodel_results(mdl,  cov_f = cov_2002, cov_hist = cov_cf, cov_fut = cov_fut, nsamp = 1000, y_start = 1960, y_now = 2002, y_fut = 2099)
 
     write.csv(res_df, "NorEMS1_M.csv")
-
+```
 Each of these models was part of CMIP5 and contributed to IPCC AR5
 (Intergovernmental Panel on Climate Change Fifth Assessment Report),
 helping assess future climate change scenarios.
-
+```r
     # load the obs & model data
     obs_res <- read.csv("res_obs.csv", row.names="X")
 
@@ -679,19 +681,21 @@ helping assess future climate change scenarios.
     ## 2     0.001222784       -0.05010727        0.05786040
     ## 3     0.034400071       -0.04861155        0.11357469
     ## 4    -0.002123840       -0.08209948        0.08022164
+```
 
 #### Plotting Syntheses
-
+```r
     # Run the synthesis
     synth_pr_attr <- synthesis(obs_res[,grepl("PR.hist", colnames(obs_res))], res_combined[,grepl("attr_PR.hist", colnames(res_combined))], synth_type = "PR")
     synth_pr_neut <- synthesis(obs_res[,grepl("PR.neut", colnames(obs_res))], res_combined[,grepl("attr_PR.neut", colnames(res_combined))], synth_type = "PR")
 
 
     plot_synthesis(synth_pr_attr, main = "Associated with\n1.36C increase in GMST")
-
+```
 ![](event_attribution_files/figure-markdown_strict/unnamed-chunk-14-1.png)
-
+```r
     plot_synthesis(synth_pr_neut,  main = "Associated with\n2002 ENSO conditions")
+```
 
 ![](event_attribution_files/figure-markdown_strict/unnamed-chunk-14-2.png)
 
