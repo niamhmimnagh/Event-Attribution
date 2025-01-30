@@ -139,16 +139,20 @@ model fits the data better.
 AIC (Akaike Information Criterion) is a measure of fit that penalises
 model complexity. A lower AIC value indicates a better fit. The AIC is
 calculated as:
+
 *A**I**C* =  − 2*L* + 2*k*
+
 where L is the log-likelihood and k is the number of parameters.
 
 *R*<sup>2</sup> is the Coefficient of Determination, and it measures the
 proportion of variance in the response explained by the model. It ranges
 from 0 (no variance explained) to 1 (perfect variance explained), and is
 calculated as:
+
 $$R^2 = 1-\frac{SS\_{res}}{SS\_{tot}}$$
-where *S**S*<sub>*r**e**s*</sub> is the residual sum of squares and
-*S**S*<sub>*t**o**t*</sub> is the total sum of squares.
+
+where *SS*<sub>*r**e**s*</sub> is the residual sum of squares and
+*SS*<sub>*t**o**t*</sub> is the total sum of squares.
 
 The adjusted *R*<sup>2</sup> improves upon *R*<sup>2</sup> by adjusting
 for the number of predictors in the model. This allows it to account for
