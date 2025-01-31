@@ -381,7 +381,7 @@ We need the El Nino factual climate to reflect the real-world 2002 El Nino condi
 
     nino_2002 <- nino_obs$nino_std[nino_obs$year == 2002] #' this is our 'factual' Nino state
 ```
-Here we examine several global climate models (GCMs) used in climate change studies. Each comes from a different modelling centre and has unique characteristics:
+Here we examine several global climate models (GCMs) used in climate change studies. Each comes from a different modelling centre and has unique characteristics. The SPEI values were calculated by Cook et. al., (2014) (available at: https://www.ldeo.columbia.edu/~jsmerdon/2014_clidyn_cooketal_supplement.html).
 
 
 ##### HadGEM2-ES (Hadley Centre Global Environment Model, version 2 - Earth System)
@@ -595,12 +595,9 @@ In this report, we have demonstrated an application of extreme event attribution
 
 ### References
 
-Bhat, G. S. (2006). The Indian drought of 2002—a sub‐seasonal
-phenomenon?. Quarterly Journal of the Royal Meteorological Society: A
-journal of the atmospheric sciences, applied meteorology and physical
-oceanography, 132(621), 2583-2602.
+Bhat, G. S. (2006). The Indian drought of 2002—a sub‐seasonal phenomenon?. Quarterly Journal of the Royal Meteorological Society: A journal of the atmospheric sciences, applied meteorology and physical oceanography, 132(621), 2583-2602.
 
-Naumann, Gustavo; Alfieri, Lorenzo; Wyser, Klaus (2017): High resolution
-SPEI monthly projection for the globe (1975-2100). European Commission,
-Joint Research Centre (JRC) \[Dataset\] PID:
+Cook, B. I., Smerdon, J. E., Seager, R., & Coats, S. (2014). Global warming and 21 st century drying. Climate dynamics, 43, 2607-2627.
+
+Naumann, Gustavo; Alfieri, Lorenzo; Wyser, Klaus (2017): High resolution SPEI monthly projection for the globe (1975-2100). European Commission, Joint Research Centre (JRC) \[Dataset\] PID:
 <http://data.europa.eu/89h/jrc-climate-spei-drought-helix-ec-earth-1975-2100>
