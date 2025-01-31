@@ -159,7 +159,9 @@ where *SS*<sub>*r**e**s*</sub> is the residual sum of squares and
 The adjusted *R*<sup>2</sup> improves upon *R*<sup>2</sup> by adjusting
 for the number of predictors in the model. This allows it to account for
 overfitting, as it penalises unnecessary variables. It is calculated as:
+
 $$R^2\_{adj}=1-\frac{(1-R^2)(n-1)}{n-k-1}$$
+
 where n is the number of observations and k is the number of predictors.
 
 In the results below, the model associated with the smallest AIC value
