@@ -4,65 +4,23 @@
 > provided by the World Weather Attribution Github account
 > (<https://github.com/WorldWeatherAttribution/rwwa_mwe>)
 
-Event attribution allows us to assess the role that climate change plays
-in the intensity, frequency, and duration of extreme weather events. By
-quantifying this contribution, event attribution helps us understand how
-natural and anthropogenic factors interact to shape the climate system.
+Event attribution allows us to assess the role that climate change plays in the intensity, frequency, and duration of extreme weather events. By quantifying this contribution, event attribution helps us understand how natural and anthropogenic factors interact to shape the climate system.
 
-The process typically involves comparing observed events to simulations
-of a counterfactual world — a world without human-induced climate
-change. By contrasting the occurrence of extreme events in the real
-world with those in a simulated baseline, we can estimate the likelihood
-and magnitude of the event being influenced by human activities.
+The process typically involves comparing observed events to simulations of a counterfactual world — a world without human-induced climate change. By contrasting the occurrence of extreme events in the real world with those in a simulated baseline, we can estimate the likelihood and magnitude of the event being influenced by human activities.
 
-In this notebook, we focus on the use of various climate variables to
-explore the factors influencing drought in India. A major drought
-occurred in India in 2002, with a rainfall deficit of 21.5% (Bhat,
-2006). The variables utilised in this analysis include:
+In this notebook, we focus on the use of various climate variables to explore the factors influencing drought in India. A major drought occurred in India in 2002, with a rainfall deficit of 21.5% (Bhat, 2006). The variables utilised in this analysis include:
 
--   SPEI (Standardised Precipitation Evapotranspiration Index): This
-    index measures the degree of drought or wetness in a region by
-    comparing the balance between precipitation and evapotranspiration.
-    A positive value indicates wet conditions, while a negative value
-    indicates drought.
+-   SPEI (Standardised Precipitation Evapotranspiration Index): This index measures the degree of drought or wetness in a region by comparing the balance between precipitation and evapotranspiration. A positive value indicates wet conditions, while a negative value indicates drought.
 
--   GMST (Global Mean Surface Temperature): GMST represents the average
-    surface temperature of the Earth, providing a measure of global
-    warming. In event attribution, this variable is often used to
-    determine how much global warming may have influenced specific
-    extreme events. The GMST data used here was accessed on the World
-    Weather Attribution Github at:
-    <https://github.com/WorldWeatherAttribution/rwwa_mwe/tree/main/ts>
-    (December 2024).
+-   GMST (Global Mean Surface Temperature): GMST represents the average  surface temperature of the Earth, providing a measure of global  warming. In event attribution, this variable is often used to determine how much global warming may have influenced specific extreme events. The GMST data used here was accessed on the World Weather Attribution Github at: <https://github.com/WorldWeatherAttribution/rwwa_mwe/tree/main/ts> (December 2024).
 
--   IOD (Indian Ocean Dipole): The IOD is a climate phenomenon
-    characterised by the difference in sea surface temperatures between
-    the western and eastern parts of the Indian Ocean. It influences
-    weather patterns, particularly in the Indian Ocean region and
-    surrounding areas, including Southeast Asia and Australia.
+-   IOD (Indian Ocean Dipole): The IOD is a climate phenomenon characterised by the difference in sea surface temperatures between the western and eastern parts of the Indian Ocean. It influences weather patterns, particularly in the Indian Ocean region and surrounding areas, including Southeast Asia and Australia.
 
--   SOI (Southern Oscillation Index): The SOI measures the difference in
-    air pressure between Tahiti in the central South Pacific and Darwin
-    in northern Australia. It is a key indicator of the El Niño-Southern
-    Oscillation (ENSO), which significantly impacts global weather
-    patterns. The SOI is used to track the intensity of El Niño and La
-    Niña events. The Southern Oscillation Index data was accessed at:
-    <http://www.bom.gov.au/climate/enso/soi/> (December 2024).
+-   SOI (Southern Oscillation Index): The SOI measures the difference in air pressure between Tahiti in the central South Pacific and Darwin in northern Australia. It is a key indicator of the El Niño-Southern Oscillation (ENSO), which significantly impacts global weather patterns. The SOI is used to track the intensity of El Niño and La Niña events. The Southern Oscillation Index data was accessed at: <http://www.bom.gov.au/climate/enso/soi/> (December 2024).
 
--   Nino3.4 Index: An index that represents the average sea surface
-    temperature anomalies in a specific region of the equatorial Pacific
-    Ocean (bounded approximately by 5°N-5°S and 170°W-120°W). This index
-    is a key indicator of El Niño and La Niña events, which have
-    significant impacts on global climate and weather patterns. The
-    Nino3.4 Index data was accessed on the World Weather Attribution
-    Github at:
-    <https://github.com/WorldWeatherAttribution/rwwa_mwe/tree/main/ts>
-    (December 2024).
+-   Nino3.4 Index: An index that represents the average sea surface temperature anomalies in a specific region of the equatorial Pacific Ocean (bounded approximately by 5°N-5°S and 170°W-120°W). This index is a key indicator of El Niño and La Niña events, which have significant impacts on global climate and weather patterns. The Nino3.4 Index data was accessed on the World Weather Attribution Github at: <https://github.com/WorldWeatherAttribution/rwwa_mwe/tree/main/ts> (December 2024).
 
-By analysing the relationships between these variables and extreme
-events, this notebook aims to investigate the potential links between
-climate change and the occurrence of such events in the present and
-future.
+By analysing the relationships between these variables and extreme events, this notebook aims to investigate the potential links between climate change and the occurrence of such events in the present and future.
 
 Event attribution is possible in R using the rwwa package
 (<https://github.com/WorldWeatherAttribution/rwwa>).
@@ -103,11 +61,7 @@ Event attribution is possible in R using the rwwa package
     # combine into single dataframe
     df <-cbind.data.frame(gmst, IOD, SOI, nino_pos, iod_pos, SPEI)
 ```
-Below we plot the SPEI values by year, including a Loess smoother
-(Locally Estimated Scatterplot Smoothing) to fit a smoothed trend line
-to the SPEI time series. This helps reveal underlying trends without
-assuming a specific parametric model. We see a dip in the Loess smoother
-below, corresponding to the drought event in 2002.
+Below we plot the SPEI values by year, including a Loess smoother (Locally Estimated Scatterplot Smoothing) to fit a smoothed trend line to the SPEI time series. This helps reveal underlying trends without assuming a specific parametric model. We see a dip in the Loess smoother below, corresponding to the drought event in 2002.
 ```r
     # Plot the time series
     plot(df$year-0.5, df$SPEI, type = "s", lwd = 2, xlab = "", ylab = "SPEI", bg = "white")
@@ -119,10 +73,7 @@ below, corresponding to the drought event in 2002.
 
 #### Fitting Non-Stationary Distribution to the Data
 
-We test several models: where SPEI depends only on GMST, IOD, positive
-IOD, SOI, and Nino3.4 Index, respectively, and a final model where SPEI
-depends on a combination of GMST, positive Nino3.4 index and positive
-IOD.
+We test several models: where SPEI depends only on GMST, IOD, positive IOD, SOI, and Nino3.4 Index, respectively, and a final model where SPEI depends on a combination of GMST, positive Nino3.4 index and positive IOD.
 ```r
     # Model fitting
     mdl_gmst <- fit_ns("norm", "shift", df, "SPEI", c("gmst"), lower = T)
@@ -134,44 +85,27 @@ IOD.
 ```
 #### Comparing Fitted Models
 
-We now compare the fitted models based on AIC values and explained
-variance (*R*<sup>2</sup> and adjusted *R*<sup>2</sup>) to see which
-model fits the data better.
+We now compare the fitted models based on AIC values and explained variance (*R*<sup>2</sup> and adjusted *R*<sup>2</sup>) to see which model fits the data better.
 
-AIC (Akaike Information Criterion) is a measure of fit that penalises
-model complexity. A lower AIC value indicates a better fit. The AIC is
-calculated as:
+AIC (Akaike Information Criterion) is a measure of fit that penalises model complexity. A lower AIC value indicates a better fit. The AIC is calculated as:
 
-*A**I**C* =  − 2*L* + 2*k*
+$$AIC=−2L+2k$$
 
 where L is the log-likelihood and k is the number of parameters.
 
-*R*<sup>2</sup> is the Coefficient of Determination, and it measures the
-proportion of variance in the response explained by the model. It ranges
-from 0 (no variance explained) to 1 (perfect variance explained), and is
-calculated as:
+*R*<sup>2</sup> is the Coefficient of Determination, and it measures the proportion of variance in the response explained by the model. It ranges from 0 (no variance explained) to 1 (perfect variance explained), and is calculated as:
 
 $$R^2 = 1-\frac{SS\_{res}}{SS\_{tot}}$$
 
-where *SS*<sub>*r**e**s*</sub> is the residual sum of squares and
-*SS*<sub>*t**o**t*</sub> is the total sum of squares.
+where *SS*<sub>*r**e**s*</sub> is the residual sum of squares and *SS*<sub>*t**o**t*</sub> is the total sum of squares.
 
-The adjusted *R*<sup>2</sup> improves upon *R*<sup>2</sup> by adjusting
-for the number of predictors in the model. This allows it to account for
-overfitting, as it penalises unnecessary variables. It is calculated as:
+The adjusted *R*<sup>2</sup> improves upon *R*<sup>2</sup> by adjusting for the number of predictors in the model. This allows it to account for overfitting, as it penalises unnecessary variables. It is calculated as:
 
 $$R^2\_{adj}=1-\frac{(1-R^2)(n-1)}{n-k-1}$$
 
 where n is the number of observations and k is the number of predictors.
 
-In the results below, the model associated with the smallest AIC value
-is the one in which SPEI is predicted using GMST, positive Nino3.4 and
-positive IOD values. This indicates that, of the models examined, this
-one provides the best fit. this is also the model with the highest
-*R*<sup>2</sup> and *R*<sub>*a**d**j*</sub><sup>2</sup> values which
-suggests that this model explains more of the variance in SPEI than the
-other models (31% according to the *R*<sup>2</sup> value and 27.5%
-according to the adjusted *R*<sup>2</sup> value).
+In the results below, the model associated with the smallest AIC value is the one in which SPEI is predicted using GMST, positive Nino3.4 and positive IOD values. This indicates that, of the models examined, this one provides the best fit. this is also the model with the highest *R*<sup>2</sup> and *R*<sub>*a**d**j*</sub><sup>2</sup> values which suggests that this model explains more of the variance in SPEI than the other models (31% according to the *R*<sup>2</sup> value and 27.5% according to the adjusted *R*<sup>2</sup> value).
 ```r
     # Comparing models
     models <- list("gmst" = mdl_gmst, "IOD" = mdl_iod, "PosIOD"=mdl_pos_iod,"SOI"=mdl_soi,  "nino"=mdl_nino_pos, "nino_iod"=mdl_nino_iod)
@@ -196,31 +130,19 @@ according to the adjusted *R*<sup>2</sup> value).
 
 #### Return Level Plots
 
-A return level plot is used in event attribution to visualise the
-probability of extreme climate events, such as heatwaves or heavy
-rainfall, under different climate conditions. It helps answer: \* How
-extreme was the observed event? \* How has the probability of such an
-event changed due to climate change? \* How likely is this event in a
-pre-industrial vs. present-day or future climate? The x-axis of these
-plots displays the return period: The expected time interval (in years)
-between occurrences of an event of a given magnitude. (e.g. A
-1-in-100-year event (return period = 100) occurs, on average, once every
-100 years). The y-axis displays the return level: The magnitude (e.g.,
-temperature, rainfall) of the event corresponding to a given return
-period.For a given return period, if the return level increases, events
-of a given frequency are becoming more severe.
+A return level plot is used in event attribution to visualise the probability of extreme climate events, such as heatwaves or heavy rainfall, under different climate conditions. It helps answer: 
 
-First, we define a ‘factual’ and ‘counter factual’ climate to compare
-and visualise the difference between the observations if they’d occurred
-at thos values of the covariates.
+* How extreme was the observed event? 
+* How has the probability of such an event changed due to climate change?
+* How likely is this event in a pre-industrial vs. present-day or future climate?
+  
+The x-axis of these plots displays the return period: The expected time interval (in years) between occurrences of an event of a given magnitude. (e.g. A 1-in-100-year event (return period = 100) occurs, on average, once every 100 years). The y-axis displays the return level: The magnitude (e.g., temperature, rainfall) of the event corresponding to a given return period. For a given return period, if the return level increases, events of a given frequency are becoming more severe.
 
-Our factual climate is defined as the climate of present-day (current
-climate). Because we are examining an event that occurred in 2002, the
-climate of 2002 is our factual climate.
+First, we define a ‘factual’ and ‘counter factual’ climate to compare and visualise the difference between the observations if they’d occurred at those values of the covariates.
 
-For our counter factual climates, we examine a pre-industrial climate
-(natural climate: expected climate without human-induced climate change)
-and a neutral climate (one with a neutral ENSO phase).
+Our factual climate is defined as the climate of present-day (current climate). Because we are examining an event that occurred in 2002, the climate of 2002 is our factual climate.
+
+For our counter factual climates, we examine a pre-industrial climate (natural climate: expected climate without human-induced climate change) and a neutral climate (one with a neutral ENSO phase).
 ```r
     # our factual climate is determined by the values of the covariates in 2023
     cov_2002 <- df[df$year == 2002,c("gmst", "nino_pos", "iod_pos"),drop = F]
@@ -395,27 +317,9 @@ and a neutral climate (one with a neutral ENSO phase).
     ## $counterfactual
     ## [1]  23.83968 217.30657
 ```
-The return period of 2002 drought in the 2002 climate is 10.43 years
-(95% confidence interval: 3.8 - 42.5 years). This means that in the 2002
-climate, a drought of this magnitude was expected to occur approximately
-once every 10 years on average, while the confidence interval suggests
-uncertainty, meaning it could happen as frequently as every 3.8 years or
-as rarely as every 42.5 years. This means that in a cooler,
-pre-industrial climate, a similar drought would have been much rarer,
-occurring roughly once every 42 years on average. The wide confidence
-intervals (up to 4133 years) suggest uncertainty, but the key takeaway
-is that such a drought was significantly less likely before modern
-climate change.
+The return period of 2002 drought in the 2002 climate is 10.43 years (95% confidence interval: 3.8 - 42.5 years). This means that in the 2002 climate, a drought of this magnitude was expected to occur approximately once every 10 years on average, while the confidence interval suggests uncertainty, meaning it could happen as frequently as every 3.8 years or as rarely as every 42.5 years. This means that in a cooler, pre-industrial climate, a similar drought would have been much rarer, occurring roughly once every 42 years on average. The wide confidence intervals (up to 4133 years) suggest uncertainty, but the key takeaway is that such a drought was significantly less likely before modern climate change.
 
-The return period for a similar drought in a cooler pre-industrial
-climate is 42.44 years (95% confidence interval: 6.9 - 4133 years). The
-return period for a similar climate in a neutral ENSO phase is 46,73
-years (95% confidence interval: 12.83 - 217.31 years). This means that
-in years when the El Niño-Southern Oscillation (ENSO) is neutral, a
-similar drought would have occurred approximately once every 47 years.
-The return period is similar to the pre-industrial climate, suggesting
-that ENSO variability significantly influences drought frequency in the
-present-day climate.
+The return period for a similar drought in a cooler pre-industrial climate is 42.44 years (95% confidence interval: 6.9 - 4133 years). The return period for a similar climate in a neutral ENSO phase is 46,73 years (95% confidence interval: 12.83 - 217.31 years). This means that in years when the El Niño-Southern Oscillation (ENSO) is neutral, a similar drought would have occurred approximately once every 47 years. The return period is similar to the pre-industrial climate, suggesting that ENSO variability significantly influences drought frequency in the present-day climate.
 ```r
     # Bootstrap results                                                        
 
@@ -463,21 +367,11 @@ present-day climate.
 ```
 #### Synthesis with Climate Models
 
-To confidently attribute the observed trend in drought as classified by
-the SPEI values, we look at changes in climate models. The previous
-statistical models are fitted to the climate model outputs, and the
-results are combined using the synthesis() function in the rwwa package
-to produce an overal attribution statement.
+To confidently attribute the observed trend in drought as classified by the SPEI values, we look at changes in climate models. The previous statistical models are fitted to the climate model outputs, and the results are combined using the synthesis() function in the rwwa package to produce an overal attribution statement.
 
-As before, we need to specify the factual an counter factual climates.
-We now also evaluate changes between the current and future climates,
-using the current climate as the baseline for the changes.
+As before, we need to specify the factual an counter factual climates. We now also evaluate changes between the current and future climates, using the current climate as the baseline for the changes.
 
-We need the El Nino factual climate to reflect the real-world 2002 El
-Nino conditions, so we standardise all Nino3.4 indices so that 1960-2021
-(the observed time period) has a mean 0 and standard deviation 1. The
-2002 standardised El Nino covariate then defines the factual climate
-along with the model’s 2002 GMST.
+We need the El Nino factual climate to reflect the real-world 2002 El Nino conditions, so we standardise all Nino3.4 indices so that 1960-2021 (the observed time period) has a mean 0 and standard deviation 1. The 2002 standardised El Nino covariate then defines the factual climate along with the model’s 2002 GMST.
 ```r
     # Fit the same nonstationary model for climate models 
     # load observed Nino covariate & standardise wrt obs period
@@ -487,16 +381,12 @@ along with the model’s 2002 GMST.
 
     nino_2002 <- nino_obs$nino_std[nino_obs$year == 2002] #' this is our 'factual' Nino state
 ```
-Here we examine several global climate models (GCMs) used in climate
-change studies. Each comes from a different modelling centre and has
-unique characteristics:
+Here we examine several global climate models (GCMs) used in climate change studies. Each comes from a different modelling centre and has unique characteristics:
+
 
 ##### HadGEM2-ES (Hadley Centre Global Environment Model, version 2 - Earth System)
 
-This was developed by the UK Met Office, and includes interactive carbon
-and atmospheric chemistry components, allowing it to simulate feedbacks
-between the climate and the carbon cycle. It is widely used in CMIP5
-(Coupled Model Intercomparison Project Phase 5).
+This was developed by the UK Met Office, and includes interactive carbon and atmospheric chemistry components, allowing it to simulate feedbacks between the climate and the carbon cycle. It is widely used in CMIP5 (Coupled Model Intercomparison Project Phase 5).
 ```r
     # HadGEM2-ES Model
     SPEI<-load_ts("~/EA_data/SPEI_HadGEM2-ES_r1i1p1.dat", col.names = c("year", "SPEI"))
@@ -530,12 +420,11 @@ between the climate and the carbon cycle. It is widely used in CMIP5
 
     write.csv(res_df, "HadGEM-ES.csv")
 ```
+
+
 ##### CanESM2 (Canadian Earth System Model, version 2)
 
-Developed by the Canadian Centre for Climate Modelling and Analysis
-(CCCma), this model incorporates atmospheric, oceanic, land surface, and
-carbon cycle components. It is often used for simulating long-term
-climate changes and variability.
+Developed by the Canadian Centre for Climate Modelling and Analysis (CCCma), this model incorporates atmospheric, oceanic, land surface, and carbon cycle components. It is often used for simulating long-term climate changes and variability.
 ```r
     # CanESM2 Model
     spei <- read.table("~/EA_data/CMIP5_PDSI_spei_CanESM2.dat", header = TRUE, sep = ",", stringsAsFactors = FALSE)
@@ -569,11 +458,11 @@ climate changes and variability.
 
     write.csv(res_df, "CanESM2.csv")
 ```
+
+
 ##### MIROC5 (Model for Interdisciplinary Research on Climate, version 5)
 
-Developed by a collaboration of Japanese institutions, MIROC5 provides
-high-resolution climate simulations with improved cloud and convection
-processes, making it useful for regional climate projections.
+Developed by a collaboration of Japanese institutions, MIROC5 provides high-resolution climate simulations with improved cloud and convection processes, making it useful for regional climate projections.
 ```r
     # MIROC5 Model
     spei <- read.table("~/EA_data/CMIP5_PDSI_spei_MIROC5.dat", header = TRUE, sep = ",", stringsAsFactors = FALSE)
@@ -607,12 +496,11 @@ processes, making it useful for regional climate projections.
 
     write.csv(res_df, "MIROC5.csv")
 ```
+
+
 ##### NorESM1-M (Norwegian Earth System Model, version 1 - Medium resolution)
 
-Developed by the Norwegian Climate Centre, this model is based on the
-CESM (Community Earth System Model) framework but with enhanced ocean
-and aerosol processes, making it useful for studying climate-aerosol
-interactions.
+Developed by the Norwegian Climate Centre, this model is based on the CESM (Community Earth System Model) framework but with enhanced ocean and aerosol processes, making it useful for studying climate-aerosol interactions.
 ```r
     # NorESM1_M Model
     spei <- read.table("~/EA_data/CMIP5_PDSI_spei_NorESM1_M.dat", header = TRUE, sep = ",", stringsAsFactors = FALSE)
@@ -646,9 +534,7 @@ interactions.
 
     write.csv(res_df, "NorEMS1_M.csv")
 ```
-Each of these models was part of CMIP5 and contributed to IPCC AR5
-(Intergovernmental Panel on Climate Change Fifth Assessment Report),
-helping assess future climate change scenarios.
+Each of these models was part of CMIP5 and contributed to IPCC AR5 (Intergovernmental Panel on Climate Change Fifth Assessment Report), helping assess future climate change scenarios.
 ```r
     # load the obs & model data
     obs_res <- read.csv("res_obs.csv", row.names="X")
@@ -701,16 +587,11 @@ helping assess future climate change scenarios.
 
 ![](event_attribution_files/figure-markdown_strict/unnamed-chunk-14-2.png)
 
-All of the observations (blue bars) and models (red bars) indicate a
-slight increased likelihood of similar droughts due to climate change
-and due to the positive Niño3.4 phase.
+All of the observations (blue bars) and models (red bars) indicate a slight increased likelihood of similar droughts due to climate change and due to the positive Niño3.4 phase.
 
-However, it’s important to note that the data for the Indian Ocean
-Dipole (IOD) variable was unavailable for this analysis. Given that the
-previous model results favoured the model with both Nino3.4 and the IOD
-index, incorporating the IOD may have a significant effect on the model,
-and provide a clearer understanding of the factors driving the observed
-increases in drought likelihood. likelihood.
+However, it’s important to note that the data for the Indian Ocean Dipole (IOD) variable was unavailable for this analysis. Given that the previous model results favoured the model with both Nino3.4 and the IOD index, incorporating the IOD may have a significant effect on the model, and provide a clearer understanding of the factors driving the observed increases in drought likelihood. 
+
+In this report, we have demonstrated an application of extreme event attribution methods to assess the role of anthropogenic climate change in the 2002 drought in India. By comparing observed data with climate model simulations representing both actual and counterfactual worlds, we estimated the change in probability and intensity of the event due to human influence. Our findings highlight the increasing likelihood of such extremes in a warming climate, reinforcing the need for robust adaptation and mitigation strategies. While uncertainties remain, particularly in model representation and observational constraints, attribution studies provide critical insights for policymakers, risk assessors, and stakeholders seeking to understand and manage climate-related risks.
 
 ### References
 
