@@ -144,7 +144,7 @@ Our factual climate is defined as the climate of present-day (current climate). 
 
 For our counter factual climates, we examine a pre-industrial climate (natural climate: expected climate without human-induced climate change) and a neutral climate (one with a neutral ENSO phase).
 ```r
-    # our factual climate is determined by the values of the covariates in 2023
+    # our factual climate is determined by the values of the covariates in 2002
     cov_2002 <- df[df$year == 2002,c("gmst", "nino_pos", "iod_pos"),drop = F]
 
     # we can compare several counterfactual climates:
