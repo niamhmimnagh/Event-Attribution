@@ -8,7 +8,7 @@ Event attribution allows us to assess the role that climate change plays in the 
 
 The process typically involves comparing observed events to simulations of a counterfactual world — a world without human-induced climate change. By contrasting the occurrence of extreme events in the real world with those in a simulated baseline, we can estimate the likelihood and magnitude of the event being influenced by human activities.
 
-In this notebook, we focus on the use of various climate variables to explore the factors influencing drought in India. A major drought occurred in India in 2002, with a rainfall deficit of 21.5% (Bhat, 2006). The variables utilised in this analysis include:
+In this report, we focus on the use of various climate variables to explore the factors influencing drought in India. A major drought occurred in India in 2002, with a rainfall deficit of 21.5% (Bhat, 2006). The variables utilised in this analysis include:
 
 -   SPEI (Standardised Precipitation Evapotranspiration Index): This index measures the degree of drought or wetness in a region by comparing the balance between precipitation and evapotranspiration. A positive value indicates wet conditions, while a negative value indicates drought.
 
